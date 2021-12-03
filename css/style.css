@@ -12,3 +12,10 @@ html {
     background-color: #735736;
 }
 
+.audio-container {
+    text-align-last: center;
+}
+
+canvas {
+    margin-left: 10%;
+}
