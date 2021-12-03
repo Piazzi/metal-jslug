@@ -5,5 +5,10 @@
 
 h1 { 
     font-family: 'MetalSlug';
+    text-align: center;
+}
+
+html {
+    background-color: #735736;
 }
 

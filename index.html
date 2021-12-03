@@ -1,38 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
     <title>Metal JSLUG</title>
-</head>
-<body>
-    <h1 style="float: left;">Metal JSLUG</h1>
+  </head>
+  <body>
+    <h1>Metal JSLUG</h1>
+    <audio autoplay>
+      <source src="assets/plastic-love.mp3" type="audio/ogg" />
+    </audio>
     <canvas></canvas>
     <script>
+      const canvas = document.querySelector("canvas");
+      canvas.width = 1500;
+      canvas.height = 500;
+      const ctx = canvas.getContext("2d");
+      const biker = new Image("img");
+      biker.src = "assets/biker.png";
 
-        const canvas = document.querySelector('canvas');
-        canvas.width = 1800;
-        canvas.height = 1800;
-        const ctx = canvas.getContext("2d");
-        const biker = new Image('img');
-        biker.src ="assets/biker.png";
+      let stage = new Image("img");
+      stage.src = "assets/stage-1.png";
 
-        let stage = new Image('img');
-        stage.src = "assets/stage-1.png"
+      //soldier.addEventListener("load", finishedLoading)
+      let l = 0;
+      let c = 0;
+      let pose = 1;
+      let quadro = 0;
 
-        //soldier.addEventListener("load", finishedLoading)
-        let l = 0;
-        let c = 0;
-        let pose = 1;
-        let quadro = 0;
-        
-        const POSES = [
-            {qmax: 5, pv: 9},
-            {qmax: 5, pv: 9},
-            {qmax: 7, pv: 9},
-            /*
+      const POSES = [
+        { qmax: 5, pv: 9 },
+        { qmax: 5, pv: 9 },
+        { qmax: 7, pv: 9 },
+        /*
             {qmax: 7, pv: 9}, 
             {qmax: 7, pv: 9},
             {qmax: 7, pv: 9},
@@ -51,41 +53,45 @@
             {qmax: 13, pv: 27},
             {qmax: 13, pv: 27},
             {qmax: 6, pv: 9}*/
-        ]
+      ];
 
-        let t0;
-        let dt;
-        let dx = 1450;
+      let t0;
+      let dt;
+      let dx = 1450;
+
+      requestAnimationFrame(passo);
+      function passo(t) {
+        t0 = t0 ?? t;
+        dt = (t - t0) / 1000;
+        desenhaFundo();
+
+        quadro =
+          quadro >= POSES[pose].qmax - 1 ? 0 : quadro + POSES[pose].pv * dt;
+
+        ctx.drawImage(
+          biker,
+          //sx, sy, sw, sh
+          Math.floor(quadro) * 60,
+          pose * 72,
+          60,
+          72,
+          //dx, dy, dw, dh
+          dx,
+          156,
+          60,
+          72
+        );
+
+        dx -= 3;
+        if (dx <= -100) dx = 1450;
 
         requestAnimationFrame(passo);
-        function passo(t) {
-            t0 = t0 ?? t;
-            dt = (t - t0)/1000 
-            desenhaFundo();
+        t0 = t;
+      }
 
-            quadro = (quadro >= POSES[pose].qmax - 1) ? 0 : 
-            quadro + POSES[pose].pv * dt;
-
-            ctx.drawImage(biker, 
-            //sx, sy, sw, sh
-            Math.floor(quadro)*60, pose*72, 60, 72,
-            //dx, dy, dw, dh
-            dx, 156, 60, 72
-            );
-
-            dx -= 3;
-            if(dx <= -100)
-            dx = 1450;
-
-            requestAnimationFrame(passo);
-            t0 = t;
-        }
-
-        function desenhaFundo() {
-            ctx.drawImage(stage,0,0);
-        }
-        
-
+      function desenhaFundo() {
+        ctx.drawImage(stage, 0, 0);
+      }
     </script>
-</body>
+  </body>
 </html>
